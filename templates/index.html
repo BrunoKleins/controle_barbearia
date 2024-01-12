@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pr-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia Cabra Macho</title>
+
+    <style>
+        body {
+            margin: 100px;
+            padding: 100px;
+            background-size: cover;
+            background-position: center;
+            background-color: whitesmoke;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .content {
+            text-align: center;
+            padding: 100px;
+            color: whitesmoke;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5em;
+        }
+    </style>
+
+    <!-- Adicionando o CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+
+    <h1 class="mb-4">Controle de Agendamentos</h1>
+
+    <form action="/agendar" method="post">
+        <div class="form-group">
+            <label for="horario">Escolha o horário:</label>
+            <select class="form-control" name="horario" id="horario">
+                {% for horario, agendamento in agenda.items() %}
+                    {% if agendamento is none %}
+                        <option value="{{ horario }}">{{ horario }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Seu nome:</label>
+            <input type="text" class="form-control" name="nome" required>
+        </div>
+
+        <div class="form-group">
+            <label for="servico">Serviço:</label>
+            <!-- Adicionando a caixa seletora para os serviços -->
+            <select class="form-control" name="servico" required>
+                <option value="cabelo">Corte de Cabelo</option>
+                <option value="barba">Corte de Barba</option>
+                <option value="combo">Combo (Cabelo + Barba)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Agendar</button>
+    </form>
+
+    <h2 class="mt-4">Agenda:</h2>
+    <ul class="list-group">
+        {% for horario, agendamento in agenda.items() %}
+            <li class="list-group-item">
+                {% if agendamento is none %}
+                    {{ horario }}: Disponível
+                {% else %}
+                    {{ horario }}: {{ agendamento.Nome }} ({{ agendamento.Servico }})
+                    <a href="/cancelar/{{ horario }}" class="btn btn-danger btn-sm float-right">Cancelar</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Adicionando os scripts do Bootstrap (jQuery e Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
